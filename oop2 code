@@ -1,0 +1,135 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Dependent {
+    private String name;
+    private String relationship;
+
+    // Constructor
+    public Dependent(String name, String relationship) {
+        this.name = name;
+        this.relationship = relationship;
+    }
+
+    // Getter methods
+    public String getName() {
+        return name;
+    }
+
+    public String getRelationship() {
+        return relationship;
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + name + ", Relationship: " + relationship;
+    }
+}
+
+public class Employee {
+    private int id;
+    private String name;
+    private String department;
+    private List<Dependent> dependents;
+
+    // Constructor
+    public Employee(int id, String name, String department) {
+        this.id = id;
+        this.name = name;
+        this.department = department;
+        this.dependents = new ArrayList<>();
+    }
+
+    // Getter methods
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public List<Dependent> getDependents() {
+        return dependents;
+    }
+
+    // Add a dependent
+    public void addDependent(Dependent dependent) {
+        this.dependents.add(dependent);
+    }
+
+    // Method to display employee information
+    public void displayInfo() {
+        System.out.println("Employee ID: " + id);
+        System.out.println("Name: " + name);
+        System.out.println("Department: " + department);
+        System.out.println("Dependents:");
+        for (Dependent d : dependents) {
+            System.out.println("  - " + d);
+        }
+    }
+}
+
+public class EmployeeManager {
+    private List<Employee> employees;
+
+    // Constructor
+    public EmployeeManager() {
+        this.employees = new ArrayList<>();
+    }
+
+    // Register a new employee
+    public void registerEmployee(int id, String name, String department) {
+        Employee employee = new Employee(id, name, department);
+        employees.add(employee);
+    }
+
+    // Register a dependent for an employee
+    public void registerDependent(int employeeId, String dependentName, String relationship) {
+        for (Employee e : employees) {
+            if (e.getId() == employeeId) {
+                Dependent dependent = new Dependent(dependentName, relationship);
+                e.addDependent(dependent);
+                return;
+            }
+        }
+        System.out.println("Employee with ID " + employeeId + " not found.");
+    }
+
+    // View all records
+    public void viewAllRecords() {
+        for (Employee e : employees) {
+            e.displayInfo();
+            System.out.println();
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        EmployeeManager manager = new EmployeeManager();
+        Scanner scanner = new Scanner(System.in);
+
+        // Register some employees
+        manager.registerEmployee(1, "Ayman Jafar", "CS");
+        manager.registerEmployee(2, "Ali Hani", "HR");
+        manager.registerEmployee(3, "Hassan Mousa", "IT");
+
+        // Register dependents
+        manager.registerDependent(1, "Sara Mohammed", "Mother");
+        manager.registerDependent(1, "Alaa Sami", "Sister");
+        manager.registerDependent(2, "Nasser Basel", "Brother");
+        manager.registerDependent(3, "Ahmed Ali", "Father");
+        manager.registerDependent(3, "Majid Amjad", "Father");
+
+        // Display all records
+        manager.viewAllRecords();
+
+        scanner.close();
+    }
+}
